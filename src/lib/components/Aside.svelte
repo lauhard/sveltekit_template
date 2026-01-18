@@ -3,10 +3,10 @@
     import {
         accountRoutes,
         type Route,
-    } from "$lib/components/Navigation/routes";
-    import { getRouteLevel, showRoute } from "$lib/components/Navigation";
+    } from "$lib/routes";
+    import { getRouteLevel, showRoute } from "$lib/components/navigation";
     import { resolve } from "$app/paths";
-    import { LucideLogIn, LucideLogOut, LucideX } from "@lucide/svelte";
+    import { LucideLogOut, LucideX } from "@lucide/svelte";
     import { signout } from "$lib/betterauth/auth-client";
 
     let { showState = $bindable(false) } = $props<{
@@ -58,7 +58,8 @@
 {/snippet}
 
 <nav class="aside" class:open={showState === true}>
-    <button class="btn btn-close"
+    <button
+        class="btn btn-close"
         onclick={() => {
             showState = false;
         }}><LucideX size="1rem"></LucideX></button
@@ -74,7 +75,7 @@
                         showState = false;
                     }}
                 >
-                    <LucideLogOut ></LucideLogOut>
+                    <LucideLogOut></LucideLogOut>
                 </button>
             {/if}
         </li>
@@ -92,7 +93,7 @@
         min-width: 250px;
         max-width: 350px;
         transform: translateX(400px);
-        background-color:var(--color-black-300);
+        background-color: var(--color-black-300);
         z-index: 20;
         transition: all 300ms ease-in-out;
         .aside-routes {
@@ -116,12 +117,12 @@
                     color: var(--color-white-500);
                 }
             }
-            .route{
+            .route {
                 margin-right: 5rem;
             }
             .route:has(.btn) {
                 .btn {
-                    margin-right: .5rem;
+                    margin-right: 0.5rem;
                     justify-self: end;
                 }
             }
@@ -129,17 +130,17 @@
                 color: var(--color-ld-accent-500);
             }
         }
-        .btn-close{
-            color:var(--color-white-500);
-            border-color:var(--color-white-500);
+        .btn-close {
+            color: var(--color-white-500);
+            border-color: var(--color-white-500);
             border-radius: 100vw;
             width: 35px;
             height: 35px;
             padding: 0;
             margin: 1rem;
-            &:hover{
-                color:var(--color-ld-accent-500);
-                border-color:var(--color-ld-accent-500);
+            &:hover {
+                color: var(--color-ld-accent-500);
+                border-color: var(--color-ld-accent-500);
             }
         }
     }

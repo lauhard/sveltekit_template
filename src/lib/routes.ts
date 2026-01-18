@@ -18,7 +18,14 @@ export const routes = [
         name: 'Home',
         icon: House,
         public: true,
-    }
+    },
+    {
+        path: '/features',
+        name: 'Features',
+        icon: ShieldUser,
+        public: true,
+    },
+    
 ] as Route[];
 
 export const accountRoutes = [

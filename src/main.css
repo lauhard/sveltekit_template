@@ -517,7 +517,7 @@ form:has(a) {
     &:hover {
         background-color: var(--color-red-700);
         border-color: var(--color-red-700);
-        color: var(--color-ld-white-500);
+        color: var(--color-white-500);
     }
 }
 

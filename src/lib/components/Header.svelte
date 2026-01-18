@@ -1,18 +1,14 @@
 <script lang="ts">
-    import type { NavProps } from "./Navigation";
-    import Navigation from "./Navigation/Navigation.svelte";
-    import Aside from "./Aside.svelte";
-    import Avatar from "./Avatar.svelte";
+    import type { NavProps } from "$lib/components/navigation";
+    import Navigation from "$lib/components/Navigation.svelte";
+    import Aside from "$lib/components/Aside.svelte";
+    import Avatar from "$lib/components/Avatar.svelte";
 
     let showState = $state(false);
     let navProps = $derived<NavProps>({
         linkPosition: "center",
         navPosition: "top",
         navHeight: 80,
-    });
-
-    $effect(() => {
-        console.log("showState", showState);
     });
 </script>
 

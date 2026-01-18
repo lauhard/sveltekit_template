@@ -1,8 +1,7 @@
 import { page } from "$app/state";
-import type { Route } from "$lib/components/Navigation/routes";
-import type { User } from "../../../app";
+import type { User } from "$lib/betterauth/auth";
+import type { Route } from "$lib/routes";
 
-// helper function to get the value of type T on basis of the key from type T
 type ValueOf<T> = T[keyof T];
 
 export const NavType = {
@@ -48,30 +47,6 @@ export const isRouteActive = (routePath: string) => {
     ) {
         return true;
     }
-};
-
-export const checkSubRoutes = (
-    routes: Route[],
-    iteration = 0,
-    count = 0,
-): number => {
-    let _i = 0;
-    routes.forEach((route: Route, index: number) => {
-        _i = route.subRoutes ? index : _i;
-    });
-
-    if (_i === 0) return count;
-
-    if (_i > 0 && routes[_i].subRoutes) {
-        let _c = routes[_i].subRoutes?.length ?? 0;
-
-        if (iteration > 0) _c = _c - 1;
-
-        count += _c;
-        iteration++;
-        return checkSubRoutes(routes[_i].subRoutes!, iteration, count);
-    }
-    return count;
 };
 
 export const getRouteLevel = (v: string) => v.split("/").length - 1;

@@ -1,6 +1,4 @@
-import { goto, invalidateAll } from '$app/navigation';
-import { authClient } from '$lib/betterauth/auth-client';
-import { House, ShieldUser, User, UserCog, UserRoundPlus, Settings2, CakeSlice, type Icon as IconType } from '@lucide/svelte';
+import { House, ShieldUser, User, Settings2, type Icon as IconType } from '@lucide/svelte';
 export interface Route {
     path?: string;
     fn?: (callback?: () => void) => void | Promise<void>;
@@ -20,12 +18,13 @@ export const routes = [
         public: true,
     },
     {
-        path: '/features',
-        name: 'Features',
+        path: '/voucher',
+        name: 'Belege',
         icon: ShieldUser,
-        public: true,
+        public: false,
+        role: 'user',
     },
-    
+
 ] as Route[];
 
 export const accountRoutes = [

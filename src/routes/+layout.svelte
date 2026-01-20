@@ -1,5 +1,6 @@
 <script lang="ts">
 	import "$lib/css/main.css";
+	import "$lib/css/component.css";
 	import favicon from "$lib/assets/favicon.svg";
 	import { type Snippet } from "svelte";
 	import Footer from "$lib/components/Footer.svelte";
@@ -13,7 +14,6 @@
 
 	let user = $derived(data.user);
 	let innerWidth = $state<number>(0);
-	// svelte-ignore state_referenced_locally
 	let userState = setUserState(user);
 
 	$effect(() => {
@@ -28,7 +28,7 @@
 
 
 <div class="app">
-	<Header></Header>
+	<Header {innerWidth} ></Header>
 	<main>
 		{@render children()}
 	</main>

@@ -32,7 +32,7 @@
         padding: 0;
         overflow: hidden;
         border-radius: 100vw;
-        border: 2px solid var(--color-ld-white-500);
+        border: 2px solid var(--color-ld-accent-500);
         .theme {
             display: flex;
             justify-content: center;
@@ -40,25 +40,20 @@
             height: 38px;
             width: 38px;
             border-radius: 50%;
-            transition-duration: 300ms;
-            transition-property: transform;
-            transition-timing-function: ease-in-out;
+            
             z-index: 100;
             opacity: 5%;
+            background-color: var(--color-ld-accent-500);
+            color: var(--color-black-500);
+            transition-duration: 300ms;
+            transition-property: transform, color, background-color;
+            transition-timing-function: ease-in-out;
         }
         .light,
         .dark {
             transform: translateX(0px);
             z-index: 100;
             opacity: 100%;
-        }
-        .dark {
-            background-color: var(--color-black-500);
-            color: var(--color-orange-500);
-        }
-        .light {
-            background-color: var(--color-white-500);
-            color: var(--color-aquamarine-500);
         }
     }
     .btn:has(.light) {

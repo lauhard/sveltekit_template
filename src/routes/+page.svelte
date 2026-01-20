@@ -1,5 +1,15 @@
-<script lang="ts">
+<script lang="ts"></script>
+<h1>
+    Mainscreen
+</h1>
 
-</script>
+<div>
 
+    
+</div>
+
+
+<style>
+
+</style>
  

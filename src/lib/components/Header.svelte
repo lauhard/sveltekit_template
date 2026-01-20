@@ -1,48 +1,46 @@
 <script lang="ts">
-    import Navigation from "$lib/components/Navigation.svelte";
     import Aside from "$lib/components/Aside.svelte";
     import Avatar from "$lib/components/Avatar.svelte";
     import { accountRoutes, routes } from "$lib/routes";
     import { signout } from "$lib/betterauth/auth-client";
     import { getUserState } from "$lib/app-state/user.svelte";
-    import { LucideLogOut, LucideMoon, LucideSun } from "@lucide/svelte";
-    import type { NavProps } from "./navigation";
+    import { LucideLogOut } from "@lucide/svelte";
     import ThemeToggle from "./ThemeToggle.svelte";
-    let showState = $state(false);
+    import Navigation from "./Navigation.svelte";
+    let showAsideUser = $state(false);
     let userState = $state(getUserState());
-
+    let { innerWidth }:{innerWidth:number} =$props();
     let propsAside = {
         direction: "right",
     };
-   
-    let propsNav: NavProps = {
-        navPosition: "top",
-        linkPosition: "center",
-    };
-   
 </script>
 
-<header>
-    <Navigation {routes} props={propsNav}></Navigation>
-    <Avatar bind:showState></Avatar>
+<header class="header">
+    <Navigation {routes} {innerWidth}></Navigation>
+    <Avatar bind:showState={showAsideUser}></Avatar>
 </header>
-<Aside bind:showState routes={accountRoutes} props={propsAside}>
+
+<Aside
+    bind:showState={showAsideUser}
+    routes={accountRoutes}
+    {propsAside}
+>
     {#snippet extra()}
         <ul class="extra">
             {#if userState.isAuthenticated()}
+                <li class="toggle-theme">
+                    <ThemeToggle></ThemeToggle>
+                </li>
                 <li class="auth">
                     <button
                         class="btn btn-logout"
                         onclick={() => {
-                            signout();
-                            showState = false;
+                            signout("/auth/login");
+                            showAsideUser = false;
                         }}
                     >
                         <LucideLogOut></LucideLogOut>
                     </button>
-                </li>
-                <li class="toggle-theme">
-                    <ThemeToggle></ThemeToggle>
                 </li>
             {/if}
         </ul>
@@ -51,25 +49,30 @@
 
 <style>
     header {
-        position: relative;
         height: var(--header-height);
         width: 100%;
         z-index: 1;
+        display: flex;
+        flex-direction: row-reverse;
     }
     .extra {
         height: 100%;
         width: 100%;
         display: flex;
-        margin-top: 2rem;
+        margin-top: 0.5rem;
         flex-direction: column;
-        .btn-logout {
-            margin-block: 0.5rem;
-            justify-self: right;
-            margin-right: 3rem;
+        .auth {
+            .btn-logout {
+                bottom: 1rem;
+                position: fixed;
+                margin-block: 0.5rem;
+                justify-self: right;
+                margin-right: 1rem;
+            }
         }
-        .toggle-theme{
+        .toggle-theme {
             display: flex;
-            margin-right: 3rem;
+            padding-right: 2.5rem;
             justify-content: right;
         }
     }

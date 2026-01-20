@@ -1,5 +1,7 @@
 import { goto, invalidateAll } from "$app/navigation";
-import { adminClient, inferAdditionalFields } from "better-auth/client/plugins";
+import { resolve } from "$app/paths";
+import type { Pathname } from "$app/types";
+import { adminClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/svelte";
 
 export const authClient = createAuthClient({
@@ -8,12 +10,12 @@ export const authClient = createAuthClient({
     ]
 });
 
-export const signout = async () => {
+export const signout = async (url:any) => {
     authClient.signOut({
         fetchOptions: {
             onSuccess: async () => {
                 await invalidateAll();
-                goto("/");
+                goto(url || resolve('/') as Pathname);
             },
         },
     });

@@ -1,24 +1,28 @@
 <script lang="ts">
     import { getUserState } from "$lib/app-state/user.svelte";
-    import {
-        accountRoutes,
-        type Route,
-    } from "$lib/routes";
+    import { type Route } from "$lib/routes";
     import { getRouteLevel, showRoute } from "$lib/components/navigation";
     import { resolve } from "$app/paths";
-    import { LucideLogOut, LucideX } from "@lucide/svelte";
-    import { signout } from "$lib/betterauth/auth-client";
+    import { LucideX } from "@lucide/svelte";
+    import { type User } from "$lib/betterauth/auth";
+    import type { Snippet } from "svelte";
 
-    let { showState = $bindable(false) } = $props<{
+    let {
+        extra,
+        showState = $bindable(false),
+        routes,
+        props,
+    } = $props<{
+        extra?: Snippet;
         showState: boolean;
+        routes: Route[];
+        props?: {
+            direction: string;
+        };
     }>();
 
     let userState = $state(getUserState());
-
-    $effect(() => {
-        console.log("showState", showState);
-        console.log("is authenticated ", userState.isAuthenticated());
-    });
+    let direction = $derived(props?.direction ?? "left");
 </script>
 
 {#snippet GetIconFromRoute(route: Route)}
@@ -29,14 +33,18 @@
 {/snippet}
 
 {#snippet RenderRoute(route: Route, index: number)}
-    {#if showRoute(userState.userInfo, route)}
+    {#if showRoute(userState.userInfo as User, route)}
         <li
             class="route"
             data-hasChildren={route?.subRoutes ? "true" : "false"}
             data-route-name={route.name}
             data-index={index}
         >
-            <a class="route-link" href={resolve(route.path as any)}>
+            <a
+                class="route-link"
+                href={resolve(route.path as any)}
+                onmousedown={() => (showState = false)}
+            >
                 {@render GetIconFromRoute(route)}
                 {route.name}
             </a>
@@ -57,7 +65,12 @@
     {/each}
 {/snippet}
 
-<nav class="aside" class:open={showState === true}>
+<nav
+    class="aside"
+    class:left={direction === "left"}
+    class:right={direction === "right"}
+    class:open={showState === true}
+>
     <button
         class="btn btn-close"
         onclick={() => {
@@ -65,39 +78,26 @@
         }}><LucideX size="1rem"></LucideX></button
     >
     <ul class="aside-routes">
-        {@render RenderRoutes(accountRoutes)}
-        <li class="route">
-            {#if userState.isAuthenticated()}
-                <button
-                    class="btn btn-logout"
-                    onclick={() => {
-                        signout();
-                        showState = false;
-                    }}
-                >
-                    <LucideLogOut></LucideLogOut>
-                </button>
-            {/if}
-        </li>
+        {@render RenderRoutes(routes)}
     </ul>
+    {@render extra?.()}
 </nav>
 
 <style>
     .aside {
         position: fixed;
         top: 0;
-        right: 0;
         bottom: 0;
         height: 100svh;
         width: 40svw;
         min-width: 250px;
         max-width: 350px;
-        transform: translateX(400px);
         background-color: var(--color-black-300);
         z-index: 20;
         transition: all 300ms ease-in-out;
         .aside-routes {
-            height: 100%;
+            position: relative;
+            height: fit-content;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -108,23 +108,17 @@
             .route-link {
                 width: 100%;
                 min-height: 40px;
-                .route-link {
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    flex-direction: row-reverse;
-                    justify-content: end;
-                    color: var(--color-white-500);
-                }
+            }
+            .route-link {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: row-reverse;
+                justify-content: end;
+                color: var(--color-white-500);
             }
             .route {
                 margin-right: 5rem;
-            }
-            .route:has(.btn) {
-                .btn {
-                    margin-right: 0.5rem;
-                    justify-self: end;
-                }
             }
             .route-link:hover {
                 color: var(--color-ld-accent-500);
@@ -138,13 +132,38 @@
             height: 35px;
             padding: 0;
             margin: 1rem;
+            position: absolute;
             &:hover {
                 color: var(--color-ld-accent-500);
                 border-color: var(--color-ld-accent-500);
             }
         }
     }
-    .open {
+    .aside.right {
+        right: 0;
+        transform: translateX(400svw);
+    }
+    .aside.left {
+        left: 0;
+        transform: translateX(-400svw);
+        .btn-close {
+            right: 0;
+        }
+
+        .route-link {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            color: var(--color-white-500);
+        }
+        .route {
+            margin-right: 0rem;
+            margin-left: 5rem;
+        }
+    }
+    .aside.open {
         transform: translateX(0svw);
         transition: all 300ms ease-in-out;
     }

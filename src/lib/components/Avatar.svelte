@@ -10,7 +10,7 @@
 
 <ul class="avatar">
     <li>
-        {#if userState?.userInfo?.id}
+        {#if userState.isAuthenticated()}
             <button class="btn btn-account" onclick={() => (showState = true)}>
                 <LucideCircleUserRound size="3rem" strokeWidth="1px"
                 ></LucideCircleUserRound>

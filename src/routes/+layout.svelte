@@ -1,5 +1,5 @@
 <script lang="ts">
-	import "../main.css";
+	import "$lib/css/main.css";
 	import favicon from "$lib/assets/favicon.svg";
 	import { type Snippet } from "svelte";
 	import Footer from "$lib/components/Footer.svelte";
@@ -25,6 +25,8 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 <svelte:window bind:innerWidth />
+
+
 <div class="app">
 	<Header></Header>
 	<main>

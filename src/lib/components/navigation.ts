@@ -28,7 +28,6 @@ export type NavPosition = ValueOf<typeof NavPosition>;
 export interface NavProps {
     navPosition: NavPosition;
     linkPosition: LinkPosition;
-    navHeight: number;
 }
 
 export const showRoute = (user: User | undefined, route: Route): boolean => {

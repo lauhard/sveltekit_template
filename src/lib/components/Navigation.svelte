@@ -1,23 +1,26 @@
 <script lang="ts">
     import { resolve } from "$app/paths";
-
-
-    import { LucideHamburger } from "@lucide/svelte";
+    import { LucideMenu } from "@lucide/svelte";
     import { getUserState } from "$lib/app-state/user.svelte";
     import { getRouteLevel, showRoute, type NavProps } from "$lib/components/navigation";
-    import { routes, type Route } from "../routes";
+    import { type Route } from "../routes";
     import { type User } from "$lib/betterauth/auth";
+    import Aside from "./Aside.svelte";
+    
+    let { routes, props } = $props<{
+        routes: Route[];
+        props?:NavProps
+    }>();
 
     let userState = $state(getUserState());
-    let { navProps }: { navProps?: NavProps | null; className?: string } =
-        $props();
-
-    let navPosition = $derived(navProps?.navPosition);
-    let linkPosition = $derived(navProps?.linkPosition);
-    let navHeight = $derived(navProps?.navHeight ?? 0);
-
-   
+    let navPosition = $derived(props?.navPosition ?? "top")
+    let linkPosition =  $derived(props?.linkPosition ?? "center")
     let innerWidth = $state<number>(700);
+    let showState = $state(false);
+
+    let propsAside={
+        direction:"left"
+    }
 </script>
 
 <svelte:window bind:innerWidth />
@@ -59,24 +62,23 @@
     class:bottom={navPosition === "bottom"}
     style=" --nav-height: 80px;"
 >
-    {#if innerWidth > 600}
-        <ul
-            class="main-routes"
-            class:center={linkPosition === "center"}
-            class:left={linkPosition === "left"}
-            class:right={linkPosition === "right"}
-        >
-            {@render RenderRoutes(routes)}
-        </ul>
-    {:else}
-        <ul class="auth">
-            <li>
-                <button class="btn btn-login">
-                    <LucideHamburger></LucideHamburger>
-                </button>
-            </li>
-        </ul>
-    {/if}
+    <ul
+        class="main-routes"
+        class:center={linkPosition === "center"}
+        class:left={linkPosition === "left"}
+        class:right={linkPosition === "right"}
+    >
+        {@render RenderRoutes(routes)}
+    </ul>
+    <Aside {routes} bind:showState props={propsAside}></Aside>
+    <ul class="auth"></ul>
+    <ul class="burger-menu">
+        <li>
+            <button class="btn btn-burger" onclick={()=>{showState=true; console.log("showstate", showState)}}>
+                <LucideMenu></LucideMenu>
+            </button>
+        </li>
+    </ul>
 </nav>
 
 <style>
@@ -92,16 +94,42 @@
             display: grid;
             grid-template-rows: var(--nav-height, 80px);
             grid-template-columns: repeat(auto-fill, minmax(0px, max-content));
+            @media (width < 600px) {
+                display: none;
+            }
         }
-
-        .auth {
+        .burger-menu {
+            .btn-burger {
+                border: none;
+                background: var(--color-black-400);
+                color: var(--color-white-500);
+                transition-property: color, background;
+                transition-duration: var(--transition-base);
+                transition-timing-function: ease-in-out;
+                
+            }
+            .btn-burger:hover {
+                color: var(--color-ld-accent-500);
+                transition-property: color, background;
+                transition-duration: var(--transition-base);
+                transition-timing-function: ease-in-out;
+            }
+        }
+        .auth,
+        .burger-menu {
             position: absolute;
-            top: 0;
             transform: translateY(-50%);
+            display: none;
+            @media (width < 600px) {
+                display: block;
+            }
             top: 50%;
             .btn {
                 margin-inline: 0.8rem;
             }
+        }
+        .burger-menu{
+            left:0;
         }
 
         .route,
@@ -113,12 +141,6 @@
             min-width: 140px;
             width: 100%;
         }
-
-        .route:hover {
-            background: var(--color-black-400);
-            color: var(--color-ld-accent-500);
-        }
-
         .route-link {
             width: 100%;
             height: 100%;
@@ -127,9 +149,16 @@
             display: flex;
             flex-direction: column;
             flex: 1;
-            &:hover {
-                color: var(--color-ld-accent-500);
-            }
+            transition-property: color, background;
+            transition-duration: var(--transition-base);
+            transition-timing-function: ease-in-out;
+        }
+        .route-link:hover {
+            background: var(--color-black-400);
+            color: var(--color-ld-accent-500);
+            transition-property: color, background;
+            transition-duration: var(--transition-base);
+            transition-timing-function: ease-in-out;
         }
     }
 
@@ -144,31 +173,29 @@
     }
 
     .nav:has(.main-routes.center) {
-        .auth {
+        .auth,
+        .burger-menu {
             right: 0;
         }
     }
-
     .nav:has(.main-routes.right) {
-        .auth {
+        .auth,
+        .burger-menu {
             left: 0;
         }
     }
-
     .nav:has(.main-routes.left) {
-        .auth {
+        .auth,
+        .burger-menu {
             right: 0;
         }
     }
-
     .main-routes.center {
         place-content: center center;
     }
-
     .main-routes.right {
         place-content: center right;
     }
-
     .main-routes.left {
         place-content: center left;
     }

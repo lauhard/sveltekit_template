@@ -9,12 +9,12 @@ export const authClient = createAuthClient({
 });
 
 export const signout = async () => {
-        authClient.signOut({
-            fetchOptions: {
-                onSuccess: async () => {
-                    await invalidateAll();
-                    goto("/");
-                },
+    authClient.signOut({
+        fetchOptions: {
+            onSuccess: async () => {
+                await invalidateAll();
+                goto("/");
             },
-        });
-    };
+        },
+    });
+};

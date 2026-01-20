@@ -37,14 +37,7 @@ export const accountRoutes = [
         role: 'user',
     },
     {
-        path: '/account/profile',
-        name: 'Profile',
-        icon: UserCog,
-        public: false,
-        role: 'user',
-    },
-    {
-        path: '/account/settings',
+        path: '/settings',
         name: 'Settings',
         icon: Settings2,
         public: false,

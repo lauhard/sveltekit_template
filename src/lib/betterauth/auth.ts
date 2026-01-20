@@ -6,7 +6,7 @@ import { getRequestEvent } from "$app/server";
 import type { Platform } from "../../app";
 import { admin } from "better-auth/plugins/admin";
 
-const auth = (platform?: Platform) => {
+export const auth = (platform?: Platform) => {
   let database = db({ platform });
 
   let trustedOrigins: Set<string> = new Set();
@@ -29,12 +29,10 @@ const auth = (platform?: Platform) => {
       sveltekitCookies(getRequestEvent) // make sure that cookies are properly set when calling signIn/signOut
     ],
     trustedOrigins: Array.from(trustedOrigins)
-  }
-  )
+  });
 }
 
 // Infer types with plugin fields included
 export type Auth = ReturnType<typeof auth>;
 export type Session = Auth["$Infer"]["Session"]["session"];
 export type User = Auth["$Infer"]["Session"]["user"];
-export default auth;

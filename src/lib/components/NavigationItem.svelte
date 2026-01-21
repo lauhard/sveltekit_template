@@ -8,10 +8,11 @@
     let {
         route,
         classPrefix = "",
-    } = $props<{
+        ...props
+    }: {
         route: Route;
         classPrefix?: string;
-    }>();
+    } = $props();
 
     let userState = $state(getUserState());
     let user = $derived(userState.userInfo) as User;
@@ -26,15 +27,17 @@
         }
     };
 
-    const showNavItem = (user: User | undefined, route: Route): boolean => {
+    const showNavItem = (route: Route): boolean => {
         if (!route.public) {
-            return user?.role === route.role && user?.id !== undefined
+            return user?.role === route.role && userState.isAuthenticated()
                 ? true
                 : false;
         } else {
             return true;
         }
     };
+
+   
 </script>
 
 {#snippet GetIconFromRoute(route: Route)}
@@ -44,12 +47,13 @@
     {/if}
 {/snippet}
 
-{#if showNavItem(user, route)}
+{#if showNavItem(route)}
     <li
         class="{classPrefix}nav-item"
-        class:active={isNavItemActive(route.path) === true}
-        data-hasChildren={route?.subRoutes ? "true" : "false"}
+        class:active={route.path ? isNavItemActive(route.path) === true : false}
+        data-hasList={route?.subRoutes ? "true" : "false"}
         data-route-name={route.name}
+        {...props}
     >
         <a class="{classPrefix}nav-link" href={resolve(route.path as any)}>
             {@render GetIconFromRoute(route)}

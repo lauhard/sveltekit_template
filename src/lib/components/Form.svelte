@@ -24,7 +24,7 @@
             await applyAction(result);
             if (result.type === "success" && result.data?.success === true) {
                 // handle successful signup, e.g., redirect or show a message
-                fn();
+                await fn();
             }
         };
     };

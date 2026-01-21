@@ -1,5 +1,4 @@
 <script lang="ts">
-    import type { User } from "$lib/betterauth/auth";
     import type { Route } from "$lib/routes";
     import { LucideMenu } from "@lucide/svelte";
     import NavigationItem from "./NavigationItem.svelte";

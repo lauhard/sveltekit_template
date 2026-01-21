@@ -1,10 +1,8 @@
 <script lang="ts">
     import { type Route } from "$lib/routes";
     import { LucideX } from "@lucide/svelte";
-    import { type User } from "$lib/betterauth/auth";
-    import { onMount, type Snippet } from "svelte";
+    import { type Snippet } from "svelte";
     import NavigationItem from "./NavigationItem.svelte";
-    import { getUserState } from "$lib/app-state/user.svelte";
     let {
         extra,
         routes,
@@ -14,16 +12,14 @@
     }: {
         extra?: Snippet;
         routes?: Route[];
-        showState?: boolean;
+        showState: boolean;
         propsAside?: { direction: string };
     } = $props();
 
     let direction = $derived(propsAside?.direction ?? "left");
     let navElement: HTMLElement;
     let hasFocus = $state(false);
-    let userState = $state(getUserState());
-    let user = $derived(userState.userInfo) as User;
-  
+
     $effect(() => {
         if (showState && navElement) {
             hasFocus = true;
@@ -31,27 +27,38 @@
     });
 
     const onClickOutside = (element: HTMLElement) => {
-        const handleClick = (event: MouseEvent | TouchEvent) => {
-            if (
-                !element.contains(event.target as Node)
-            ) {
+        const closeAside = (event: MouseEvent | TouchEvent) => {
+            if (!element.contains(event.target as Node)) {
                 showState = false;
             }
         };
-        document.addEventListener("click", handleClick, true);
+        document.addEventListener("click", closeAside, true);
         return () => {
-            document.removeEventListener("click", handleClick, true);
+            document.removeEventListener("click", closeAside, true);
         };
     };
-    
 
     const onKeyDown = () => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key == "Escape") showState = false;
+        const closeAside = (event: KeyboardEvent) => {
+            if (event.key == "Escape" &&  hasFocus) 
+                showState = false;
         };
-        document.addEventListener("keydown", handleKeyDown, true);
+        document.addEventListener("keydown", closeAside, true);
         return () => {
-            document.removeEventListener("keydown", handleKeyDown, true);
+            document.removeEventListener("keydown", closeAside, true);
+        };
+    };
+
+    const onClickLI = (element: HTMLLIElement) => {
+        const closeAside = (event: MouseEvent) => {
+            if (element.contains(event.target as HTMLElement)) {
+                showState = false; // Directly modify the component's $state
+            }
+        };
+
+        document.addEventListener("click", closeAside, true);
+        return () => {
+            document.removeEventListener("click", closeAside, true);
         };
     };
 </script>
@@ -77,7 +84,7 @@
     >
     <ul class="aside-nav-items">
         {#each routes as route}
-            <NavigationItem classPrefix="aside-" {route}></NavigationItem>
+            <NavigationItem classPrefix="aside-" {route} {@attach onClickLI}></NavigationItem>
         {/each}
     </ul>
     {@render extra?.()}

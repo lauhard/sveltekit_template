@@ -1,22 +1,21 @@
 <script lang="ts">
     import Aside from "$lib/components/Aside.svelte";
     import Avatar from "$lib/components/Avatar.svelte";
+    import Navigation from "$lib/components/Navigation.svelte";
     import { accountRoutes, routes } from "$lib/routes";
     import { signout } from "$lib/betterauth/auth-client";
     import { getUserState } from "$lib/app-state/user.svelte";
     import { LucideLogOut } from "@lucide/svelte";
     import ThemeToggle from "./ThemeToggle.svelte";
-    import Navigation from "./Navigation.svelte";
     let showAsideUser = $state(false);
     let userState = $state(getUserState());
-    let { innerWidth }:{innerWidth:number} =$props();
     let propsAside = {
         direction: "right",
     };
 </script>
 
 <header class="header">
-    <Navigation {routes} {innerWidth}></Navigation>
+    <Navigation {routes}></Navigation>
     <Avatar bind:showState={showAsideUser}></Avatar>
 </header>
 

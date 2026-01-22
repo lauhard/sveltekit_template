@@ -13,10 +13,11 @@
         @media (width < 600px) {
             display: none;
         }
+        
     }
 
     .nav-burger-menu {
-        display: flex;
+        display: none;
         height: 100%;
         justify-content: center;
         align-items: center;
@@ -31,12 +32,14 @@
             transition-timing-function: ease-in-out;
 
         }
-
         .btn-burger:hover {
             color: var(--color-ld-accent-500);
             transition-property: color, background;
             transition-duration: var(--transition-base);
             transition-timing-function: ease-in-out;
+        }
+        @media (width < 600px){
+            display: flex;
         }
     }
 

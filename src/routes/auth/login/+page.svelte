@@ -2,10 +2,10 @@
     import { authClient } from "$lib/betterauth/auth-client";
     import { goto, invalidateAll } from "$app/navigation";
     import type { ActionData } from "./$types";
-    import { resolve } from "$app/paths";
     import FormError from "$lib/components/FormError.svelte";
     import Form from "$lib/components/Form.svelte";
     import Error from "$lib/components/Error.svelte";
+    import { resolve } from "$app/paths";
 
     let { form }: { form: ActionData } = $props();
     let email = $state<string>("");

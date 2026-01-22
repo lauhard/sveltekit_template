@@ -3,19 +3,17 @@
     import { LucideMenu } from "@lucide/svelte";
     import NavigationItem from "./NavigationItem.svelte";
     import Aside from "./Aside.svelte";
-    let { routes, innerWidth=700, ...props}:{routes:Route[], innerWidth?:number} =$props();
+    let { routes, ...props}:{routes:Route[]} =$props();
     let showAsideNav = $state(false);
 </script>
 
 <nav class="nav " {...props} >
-    {#if innerWidth > 600}
         <ul class="nav-items center">
             {#each routes as route}
                 <NavigationItem {route}
                 ></NavigationItem>
             {/each}
         </ul>
-    {:else}
         <div class="nav-burger-menu">
             <button
                 class="btn btn-burger"
@@ -27,7 +25,6 @@
             </button>
         </div>
         <Aside bind:showState={showAsideNav} {routes}></Aside>
-    {/if}
 </nav>
 
 <style></style>

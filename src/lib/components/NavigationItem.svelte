@@ -37,7 +37,6 @@
         }
     };
 
-   
 </script>
 
 {#snippet GetIconFromRoute(route: Route)}

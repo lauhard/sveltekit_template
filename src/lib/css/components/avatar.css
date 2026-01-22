@@ -1,8 +1,7 @@
     .avatar {
-        position: absolute;
+        position: fixed;
         min-width: 100px;
         width: fit-content;
-        position: relative;
         display: flex;
         z-index: 9999;
 

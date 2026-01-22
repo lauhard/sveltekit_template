@@ -63,13 +63,15 @@
     .nav-item,
     .nav-link {
         position: relative;
-        width: fit-content;
+        width: 100%;
+        max-width: max-content;
         display: grid;
         place-content: center center;
-        min-width: 140px;
-        width: 100%;
+        min-width: 100px;
     }
-   
+    .nav-item{
+        margin-inline: 1rem;
+    }
 
     .nav-link {
         width: 100%;

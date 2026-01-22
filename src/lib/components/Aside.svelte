@@ -28,7 +28,7 @@
 
     const onClickOutside = (element: HTMLElement) => {
         const closeAside = (event: MouseEvent | TouchEvent) => {
-            if (!element.contains(event.target as Node)) {
+            if (!element.contains(event.target as HTMLElement)) {
                 showState = false;
             }
         };
@@ -52,7 +52,7 @@
     const onClickLI = (element: HTMLLIElement) => {
         const closeAside = (event: MouseEvent) => {
             if (element.contains(event.target as HTMLElement)) {
-                showState = false; // Directly modify the component's $state
+                showState = false;
             }
         };
 

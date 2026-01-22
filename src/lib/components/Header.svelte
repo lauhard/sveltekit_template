@@ -53,6 +53,7 @@
         width: 100%;
         z-index: 1;
         display: flex;
+        position: relative;
         flex-direction: row-reverse;
     }
     .extra {
